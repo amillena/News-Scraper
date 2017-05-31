@@ -60,7 +60,7 @@ app.get("/", function(req, res) {
       });
     });
 
-//Scraping Articles from Cracked
+//Scraping Articles from NY Times
 app.get("/scrape", function(req, res) {
 
   //request("http://www.cracked.com/humor-movies-tv.html", function(error, response, html) {
