@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/amillena/News-Scraper.git"
   },
-  "author": "",
+  "author": "Amillena",
   "license": "ISC",
   "bugs": {
     "url": ""
