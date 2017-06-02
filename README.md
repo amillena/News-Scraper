@@ -18,5 +18,5 @@ News Scraper is an app that allows user to leave comments on the latest news. Mo
 * Cheerio
 
 ## Heroku Link
-
+https://vast-coast-52467.herokuapp.com/
 

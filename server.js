@@ -10,12 +10,12 @@ var Story = require("./models/Story.js");
 // Our scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
+
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 
 var app = express();
 var port = process.env.PORT || 8080;
-
 
 app.use(express.static(process.cwd() + "/public"));
 
@@ -28,15 +28,12 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
-//mongoose.connect("mongodb://heroku_3g888fzh:5ui81vhbuai5umnscnv1dulk7l@ds153710.mlab.com:53710/heroku_3g888fzh");
 var databaseUri = "mongodb://localhost/mongonews";
-//mongoose.connect("mongodb://heroku_qfl0mlz7:ubc123@ds157641.mlab.com:57641/heroku_qfl0mlz7");
-
-if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI);
-}else{
-  mongoose.connect(databaseUri);
-}
+  if (process.env.MONGODB_URI) {
+    mongoose.connect(process.env.MONGODB_URI);
+    }else{
+    mongoose.connect(databaseUri);
+  }
 
 // mongoose.connect("mongodb://localhost/mongonews");
 var db = mongoose.connection;
@@ -52,73 +49,47 @@ db.once("open", function() {
 });
 
 //Routes
-
 app.get("/", function(req, res) {
 
       var query = Story.find({}).sort({$natural: -1}).limit(10);
-
       query.exec(function(err, docs){
-
           if(err){
             throw error;
           }
-
           res.render("index",{story: docs});
       });
     });
 
 //Scraping Articles from NY Times
 app.get("/scrape", function(req, res) {
-
-  //request("http://www.cracked.com/humor-movies-tv.html", function(error, response, html) {
-  request("https://www.nytimes.com/section/travel?action=click&pgtype=Homepage&region=TopBar&module=HPMiniNav&contentCollection=Travel&WT.nav=page", function(error, response, html) {
+    request("https://www.nytimes.com/section/travel?action=click&pgtype=Homepage&region=TopBar&module=HPMiniNav&contentCollection=Travel&WT.nav=page", function(error, response, html) {
     var $ = cheerio.load(html);
 
-    //$("div.listEntry").each(function(i, element) {
     $("article.story").each(function(i, element) {
           var result = {};
-
-          // result.title = $(this).find("div.meta").find("h3").find("a").text();
-          // result.link =  $(this).find("a").attr("href");
-          // result.image = $(this).find("a").find("img").attr("data-img");
-
-
 
           result.title = $(this).find("div.story-body").find("h2.headline").find("a").text();
           result.link =  $(this).find("a").attr("href");
           result.image = $(this).find("a").find("img").attr("src");
-          // result.saved = false;
-
           console.log(result);
 
           var entry = new Story(result);
-
           entry.save(function(err, doc) {   
-
             if (err) {
               console.log(err);
             }
             else {
               console.log(doc);
             }
-      });
-      // closing entry.save
-
-    });
-    //closing div.listEntry
-
-
-    });
-    // closing request
-
-    res.redirect("/");
-
-  });
-  // closing app.get
+      });// closing entry.save
+    });//closing article.story
+  });// closing request
+  res.redirect("/");
+});// closing app.get
 
 //Get Articles from DB
 app.get("/stories", function(req, res) {
-  // Grab every doc in the Articles array
+// Grab every doc in the Articles array
   Story.find({}, function(error, doc) {
     // Log any errors
     if (error) {
@@ -152,7 +123,6 @@ app.get("/stories/:id", function(req, res) {
 
 
 app.get("/saved", function(req,res){
-
     Story.find({saved:true}, function(error, doc) {
     // Log any errors
     if (error) {
@@ -163,45 +133,37 @@ app.get("/saved", function(req,res){
       res.render("saved",{story: doc});
     }
   });
-
 });
 
 // Change from false to true
 app.post("/updates/:id", function(req,res){
-
   Story.where({ _id: req.params.id }).update({ $set:{saved: true }})
-
-      .exec(function(error, doc) {
+    .exec(function(error, doc) {
     // Log any errors
     if (error) {
       console.log(error);
     }
     // Otherwise, send the doc to the browser as a json object
     else {
-
       res.json(doc)
     }
   });
-
 });
 
 // Change from true to false
 app.post("/updates/:id/:saved", function(req,res){
 
   Story.where({_id: req.params.id, saved:true }).update({ $set:{saved: false }})
-
-      .exec(function(error, doc) {
+    .exec(function(error, doc) {
     // Log any errors
     if (error) {
       console.log(error);
     }
     // Otherwise, send the doc to the browser as a json object
     else {
-
-      res.json(doc)
+    res.json(doc)
     }
   });
-
 });
 
 // Post notes
@@ -227,7 +189,7 @@ app.post("/notes/:id", function(req, res) {
           console.log(err);
         }
         else {
-          // Or send the document to the browser
+        // Or send the document to the browser
           res.send(doc);
         }
       });
