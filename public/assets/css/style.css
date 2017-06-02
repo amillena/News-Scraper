@@ -1,15 +1,13 @@
 body{
-
-  /*font-family: 'PT Sans Narrow', sans-serif;*/
   font-family: 'Patua One', cursive;
 }
-
+.jumbotron{
+  background-color: #00BFFF;
+}
 #displayNewspaperGif {
-
     background-image: url("../img/newsPrint.gif");
     color: white;
     height: 250px;
-    /*background-color: #cccccc;*/
 }
 
 .card-img-top {
