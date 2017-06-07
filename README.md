@@ -2,7 +2,7 @@
 
 ## Project Description
 
-Travel News Scraper is an app that allows user to leave comments on the latest travel news articles from NY Times. Mongoose and Cheerio were used to scraped New York Times for articles.
+Travel News Scraper is an app that allows user to leave comments on the latest travel news articles from NY Times. Mongoose and Cheerio were used to scrape New York Times for articles.
 
 ## Technologies Used
 
